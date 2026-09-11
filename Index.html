@@ -1,0 +1,2533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CA PRACTICE ERP — Complete Practice Management & Automation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-base: #060b17;
+      --bg-surface: #0e172a;
+      --bg-card: rgba(22, 33, 58, 0.85);
+      --bg-card-hover: rgba(30, 45, 78, 0.95);
+      --border-color: rgba(71, 99, 153, 0.25);
+      --border-glow: rgba(0, 180, 216, 0.4);
+      --primary: #00b4d8;
+      --primary-glow: rgba(0, 180, 216, 0.3);
+      --accent: #48cae4;
+      --gold: #f59e0b;
+      --emerald: #10b981;
+      --rose: #ef4444;
+      --purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 10%, #132247 0%, var(--bg-base) 80%);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Video Player Bar */
+    header.erp-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 14, 28, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #00b4d8, #7209b7);
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 19px;
+      box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+    }
+
+    .brand-meta h1 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, #90e0ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-meta p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .video-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 6px 14px;
+      border-radius: 40px;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-ctrl {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 14px;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--primary);
+    }
+
+    .btn-ctrl.play-active {
+      background: var(--primary);
+      color: #051020;
+      box-shadow: 0 0 14px var(--primary);
+    }
+
+    .slide-indicator {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      padding: 0 8px;
+      font-weight: 700;
+    }
+
+    .speed-select {
+      background: #111b33;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 20px;
+      padding: 3px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-contact {
+      background: linear-gradient(135deg, #00b4d8, #0077b6);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-contact:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+    }
+
+    /* Video Timeline Progress Bar */
+    .timeline-progress {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #00b4d8, #9d4edd);
+      width: 0%;
+      box-shadow: 0 0 10px var(--primary);
+      transition: width 0.1s linear;
+    }
+
+    /* Presentation Screen Viewport */
+    main.presentation-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .slide-wrapper {
+      width: 100%;
+      max-width: 1240px;
+      min-height: 640px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 180, 216, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-screen {
+      flex: 1;
+      display: none;
+      padding: 40px 48px;
+      animation: fadeInSlide 0.45s ease-out forwards;
+    }
+
+    .slide-screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeInSlide {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Slide Header Meta */
+    .slide-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .slide-index-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Grid & Flex Components for Mockups */
+    .slide-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .slide-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      flex: 1;
+    }
+
+    .slide-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.25s;
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-glow);
+      background: var(--bg-card-hover);
+    }
+
+    /* Pipeline Process Arrows */
+    .workflow-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .flow-step {
+      background: #131e38;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: center;
+      flex: 1;
+      min-width: 95px;
+    }
+
+    .flow-step .step-icon {
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .flow-step .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .flow-arrow {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Mock UI Badges & Status */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-info { background: rgba(0, 180, 216, 0.15); color: #38bdf8; border: 1px solid rgba(0, 180, 216, 0.3); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+
+    /* Mock Table */
+    .mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .mock-table th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px;
+      text-align: left;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    .mock-table td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #e2e8f0;
+    }
+
+    /* Bottom Slide Nav Deck */
+    footer.slide-deck-footer {
+      background: #09101f;
+      border-top: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .key-insights {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .key-insights span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .key-insights i {
+      color: var(--primary);
+    }
+
+    .drawer-trigger {
+      background: #17233f;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .drawer-trigger:hover {
+      background: #202e52;
+    }
+
+    /* Modal / Slide Drawer Navigation */
+    .slide-drawer {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 340px;
+      height: 100vh;
+      background: #0b1329;
+      border-left: 1px solid var(--border-color);
+      z-index: 200;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.7);
+    }
+
+    .slide-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 18px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .drawer-item {
+      padding: 10px 14px;
+      font-size: 12px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s;
+      margin-bottom: 4px;
+    }
+
+    .drawer-item:hover, .drawer-item.active {
+      background: rgba(0, 180, 216, 0.15);
+      color: #fff;
+    }
+
+    .drawer-item.active {
+      border-left: 3px solid var(--primary);
+      font-weight: 700;
+    }
+
+    /* Floating Autoplay Alert */
+    .video-floating-badge {
+      position: fixed;
+      bottom: 75px;
+      right: 24px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--primary);
+      border-radius: 30px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #38bdf8;
+      box-shadow: 0 0 15px rgba(0, 180, 216, 0.25);
+      pointer-events: none;
+      animation: pulseAlert 2s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .slide-grid-2, .slide-grid-3, .slide-grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .slide-screen {
+        padding: 20px;
+      }
+      header.erp-topbar {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar Video & Navigation Controls -->
+  <header class="erp-topbar">
+    <div class="brand">
+      <div class="brand-logo">CA</div>
+      <div class="brand-meta">
+        <h1>CA PRACTICE ERP</h1>
+        <p>Complete CA Firm Practice Management & Automation | Dev: <strong>Dhiraj Jain</strong></p>
+      </div>
+    </div>
+
+    <!-- Video Mode Controls -->
+    <div class="video-controls">
+      <button class="btn-ctrl" id="prevBtn" title="Previous Slide (Arrow Left)"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="btn-ctrl play-active" id="playPauseBtn" title="Play/Pause Video Mode"><i class="fa-solid fa-pause"></i></button>
+      <button class="btn-ctrl" id="nextBtn" title="Next Slide (Arrow Right)"><i class="fa-solid fa-forward-step"></i></button>
+      <div class="slide-indicator" id="slideNum">01 / 52</div>
+      <select class="speed-select" id="speedSelect" title="Autoplay Pace">
+        <option value="4000">4s (Fast)</option>
+        <option value="6000" selected>6s (Normal)</option>
+        <option value="9000">9s (Detailed)</option>
+        <option value="12000">12s (Study)</option>
+      </select>
+      <button class="btn-ctrl" id="fullScreenBtn" title="Fullscreen View"><i class="fa-solid fa-expand"></i></button>
+    </div>
+
+    <div class="header-actions">
+      <button class="drawer-trigger" id="openDrawer"><i class="fa-solid fa-list-check"></i> Slide Deck (52)</button>
+      <a href="https://wa.me/?text=Hello%20Dhiraj%20Jain,%20I%20am%20interested%20in%20CA%20Practice%20ERP%20Demo" target="_blank" class="btn-contact">
+        <i class="fa-brands fa-whatsapp"></i> Book CA Demo
+      </a>
+    </div>
+  </header>
+
+  <!-- Timeline progress bar (video style) -->
+  <div class="timeline-progress" id="progressBarContainer">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Main Presentation Slides Viewer -->
+  <main class="presentation-stage">
+    <div class="slide-wrapper" id="slideViewport">
+
+      <!-- SLIDE 1: HERO COVER -->
+      <div class="slide-screen active" data-slide="1" data-category="Overview">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-shield-halved"></i> Commercial Enterprise System</div>
+            <h2 class="slide-title">CA PRACTICE ERP</h2>
+            <p class="slide-subtitle">Complete CA Firm Practice Management & Automation System</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 01 / 52</div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 20px 0;">
+          <div style="display:inline-block; padding: 8px 18px; border-radius: 30px; background: rgba(0, 180, 216, 0.15); border: 1px solid var(--primary); color: var(--accent); font-weight: 700; font-size: 13px; margin-bottom: 20px;">
+            "One ERP. Complete CA Firm."
+          </div>
+          <h1 style="font-size: 38px; font-weight: 800; max-width: 900px; line-height: 1.25; margin-bottom: 24px;">
+            Connect Clients, Staff, Tasks, Compliance, Documents, Finance & AI into One Seamless Platform.
+          </h1>
+          <p style="color: var(--text-muted); max-width: 750px; font-size: 15px; margin-bottom: 30px;">
+            Designed specifically for Chartered Accountants, Managing Partners, and Modern Accounting Firms to bring complete visibility, zero deadline defaults, and effortless cash flow.
+          </p>
+          <div style="display:flex; gap: 15px; flex-wrap: wrap; justify-content:center;">
+            <span class="badge badge-info"><i class="fa-solid fa-check"></i> Multi-Staff Hierarchy</span>
+            <span class="badge badge-success"><i class="fa-solid fa-check"></i> Automated WhatsApp & Invoicing</span>
+            <span class="badge badge-purple"><i class="fa-solid fa-check"></i> AI Notice & Working Papers</span>
+            <span class="badge badge-warning"><i class="fa-solid fa-check"></i> Client 360 Command Center</span>
+          </div>
+          <div style="margin-top: 35px; font-size: 12px; color: var(--text-dim);">
+            Architect & Commercial Developer: <strong style="color: #fff;">Dhiraj Jain</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: WHAT IS CA PRACTICE ERP -->
+      <div class="slide-screen" data-slide="2" data-category="Architecture">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-compass"></i> Core Architecture</div>
+            <h2 class="slide-title">What is CA Practice ERP?</h2>
+            <p class="slide-subtitle">A centralized operating engine that connects every operational step of a CA Firm</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 02 / 52</div>
+        </div>
+        <div style="margin-bottom: 20px; background: rgba(0, 180, 216, 0.08); padding: 14px 20px; border-radius: 10px; border-left: 4px solid var(--primary); font-size: 14px;">
+          <strong>Main Vision:</strong> "From client onboarding to final fee collection — manage the complete CA practice from one single system without scattered tools."
+        </div>
+        <div class="workflow-flow" style="margin: 30px 0;">
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-building-user"></i></div><div class="step-label">Client</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-list-check"></i></div><div class="step-label">Service</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-gear"></i></div><div class="step-label">Staff</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-tasks"></i></div><div class="step-label">Task</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-folder-open"></i></div><div class="step-label">Documents</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="step-label">Compliance</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-check"></i></div><div class="step-label">Review</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-comments"></i></div><div class="step-label">Comm.</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="step-label">Fees</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-chart-pie"></i></div><div class="step-label">AI & MIS</div></div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-crosshairs"></i> Single Source of Truth</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">No separate Excel files, no missed WhatsApp requests, no confusion on who is doing what.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-gears"></i> Standardized SOPs</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">Turn GST, TDS, and Audit services into auto-generating checklists with predefined roles and reviewers.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--purple); font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-brain"></i> CA Supervised AI</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">Assists with notice digestion, document queries, and draft creation while keeping final sign-off with the CA.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: PROBLEMS IN TYPICAL CA FIRM -->
+      <div class="slide-screen" data-slide="3" data-category="Problem">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-triangle-exclamation" style="color:var(--rose)"></i> Current Reality</div>
+            <h2 class="slide-title">Problems in a Typical CA Firm</h2>
+            <p class="slide-subtitle">Scattered software and manual follow-ups cause hidden losses and partner fatigue</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 03 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card" style="border-color: rgba(239, 68, 68, 0.3);">
+            <h3 style="color: #f87171; font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-network-wired"></i> The Fragmented Chaos</h3>
+            <ul style="list-style: none; font-size: 13px; line-height: 2.2; color: #cbd5e1;">
+              <li><i class="fa-solid fa-xmark" style="color:#ef4444; margin-right:8px;"></i> <strong>Client Records:</strong> Trapped in old Excel sheets & registers</li>
+              <li><i class="fa-solid fa-xmark" style="color:#ef4444; margin-right:8px;"></i> <strong>Data Collection:</strong> Chasing clients on personal WhatsApp</li>
+              <li><i class="fa-solid fa-xmark" style="color:#ef4444; margin-right:8px;"></i> <strong>Document Storage:</strong> Scattered in Google Drive & local PCs</li>
+              <li><i class="fa-solid fa-xmark" style="color:#ef4444; margin-right:8px;"></i> <strong>Notice Register:</strong> Manual diaries with high penalty risks</li>
+              <li><i class="fa-solid fa-xmark" style="color:#ef4444; margin-right:8px;"></i> <strong>Billing & Collection:</strong> Forgotten invoices and unbilled extra work</li>
+            </ul>
+          </div>
+          <div class="glass-card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: rgba(239, 68, 68, 0.05);">
+            <div style="font-size: 28px; font-weight: 800; color: #f87171; line-height: 1.4; margin-bottom: 15px;">
+              SCATTERED INFO<br>
+              <span style="font-size:18px; color:var(--text-dim)">↓</span><br>
+              MANUAL WORKLOAD<br>
+              <span style="font-size:18px; color:var(--text-dim)">↓</span><br>
+              MISSED FOLLOW-UPS<br>
+              <span style="font-size:18px; color:var(--text-dim)">↓</span><br>
+              ZERO VISIBILITY FOR PARTNERS
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); max-width: 320px;">
+              Partners spend 60% of their day answering: "Who has the password?", "Did ABC submit purchase bills?", "Who is working on this return?"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: THE ERP SOLUTION -->
+      <div class="slide-screen" data-slide="4" data-category="Solution">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-circle-nodes" style="color:var(--emerald)"></i> Unified Solution</div>
+            <h2 class="slide-title">The Complete Connected Ecosystem</h2>
+            <p class="slide-subtitle">Everything revolves around your firm's single centralized operating core</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 04 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-users"></i> Client & Staff Core</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Client 360, KYC Vault, Hierarchy Permissions, Dynamic Staff Assignment.</p>
+            <span class="badge badge-info">Zero Silos</span>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-clock-rotate-left"></i> Workflow & Task Engine</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">GST, TDS, ITR, Audit SOPs, Auto recurring tasks with Maker-Checker approvals.</p>
+            <span class="badge badge-success">Standardized Quality</span>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-envelope-circle-check"></i> Communication & Notices</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Official WhatsApp automation, AI Notice digestion, Email sync & audit log.</p>
+            <span class="badge badge-warning">Zero Missed Deadlines</span>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--purple); font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-coins"></i> Billing & Collections</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Service billing, Auto WhatsApp payment reminders, Outstanding aging reports.</p>
+            <span class="badge badge-purple">Faster Cashflow</span>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:#38bdf8; font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-robot"></i> CA Intelligence Hub</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Firm Knowledge AI, Morning Partner Briefing, Workpaper Assistance, Churn Radar.</p>
+            <span class="badge badge-info">Executive Control</span>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:#4ade80; font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-door-open"></i> Client Portal</h4>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Dedicated white-label portal for clients to upload bills, view filed returns & invoices.</p>
+            <span class="badge badge-success">Client Delight</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: COMPLETE ERP MODULE MAP -->
+      <div class="slide-screen" data-slide="5" data-category="Modules">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-cubes"></i> 8 Functional Groups</div>
+            <h2 class="slide-title">Complete ERP Module Map</h2>
+            <p class="slide-subtitle">Enterprise-grade modules designed specifically for CA firms</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 05 / 52</div>
+        </div>
+        <div class="slide-grid-4">
+          <div class="glass-card">
+            <h5 style="color:var(--primary); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-user-group"></i> 1. CLIENT</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Client Master</li>
+              <li>• Onboarding Wizard</li>
+              <li>• Service Matrix</li>
+              <li>• Client 360 View</li>
+              <li>• Client Portal</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--emerald); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-briefcase"></i> 2. WORK</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Task Engine</li>
+              <li>• SOP Workflows</li>
+              <li>• Data Request Track</li>
+              <li>• Working Papers</li>
+              <li>• Multi-tier Review</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--gold); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-calendar-check"></i> 3. COMPLIANCE</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Statutory Calendar</li>
+              <li>• GST Returns & 2B</li>
+              <li>• TDS/TCS Pipeline</li>
+              <li>• Income Tax Track</li>
+              <li>• Statutory & Tax Audit</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--rose); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-envelope-open-text"></i> 4. NOTICES</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Notice Register</li>
+              <li>• AI Notice Extractor</li>
+              <li>• Hearing Trackers</li>
+              <li>• Escalation Alerts</li>
+              <li>• Reply Workflows</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--accent); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-bullhorn"></i> 5. COMMUNICATION</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Bulk WhatsApp</li>
+              <li>• Auto Due Reminders</li>
+              <li>• Email Templates</li>
+              <li>• Audit Trail Log</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--emerald); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-receipt"></i> 6. FINANCE</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Fee Schedules</li>
+              <li>• GST Invoicing</li>
+              <li>• Payment Link Track</li>
+              <li>• Aging & Collections</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:var(--purple); font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-microchip"></i> 7. AI SUITE</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• AI Client Assistant</li>
+              <li>• CA Knowledge Hub</li>
+              <li>• Daily Partner Brief</li>
+              <li>• Email & Query Drafter</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h5 style="color:#f472b6; font-size:12px; text-transform:uppercase; margin-bottom:6px;"><i class="fa-solid fa-chart-line"></i> 8. MANAGEMENT</h5>
+            <ul style="font-size:11px; color:var(--text-muted); list-style:none; line-height:1.7;">
+              <li>• Partner MIS</li>
+              <li>• Staff Workload Index</li>
+              <li>• Client Profitability</li>
+              <li>• Fee Revision AI</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: CLIENT MASTER -->
+      <div class="slide-screen" data-slide="6" data-category="Client Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-address-card"></i> Single Source of Truth</div>
+            <h2 class="slide-title">Client Master: Every Client, One Central Record</h2>
+            <p class="slide-subtitle">Centralized master database eliminating repeated data entry and missing credentials</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 06 / 52</div>
+        </div>
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px;">
+            <div>
+              <span class="badge badge-info">ACTIVE CLIENT</span>
+              <strong style="font-size:17px; margin-left:8px;">ABC TRADERS PVT LTD</strong>
+              <span style="font-size:11px; color:var(--text-muted); margin-left:10px;">CIN: U51909MH2018PTC304122</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-ctrl" style="border:1px solid var(--border-color); width:auto; border-radius:6px; padding:4px 10px; font-size:11px;"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button class="btn-ctrl" style="border:1px solid var(--border-color); width:auto; border-radius:6px; padding:4px 10px; font-size:11px;"><i class="fa-solid fa-download"></i> Export</button>
+            </div>
+          </div>
+          <div class="slide-grid-3" style="gap:14px; font-size:12px;">
+            <div><span style="color:var(--text-muted)">PAN:</span> <strong>AAACA1234F</strong></div>
+            <div><span style="color:var(--text-muted)">GSTIN:</span> <strong>27AAACA1234F1Z5</strong></div>
+            <div><span style="color:var(--text-muted)">TAN:</span> <strong>MUMA12345B</strong></div>
+            <div><span style="color:var(--text-muted)">Primary Contact:</span> <strong>Mr. Rajesh Shah (MD)</strong></div>
+            <div><span style="color:var(--text-muted)">WhatsApp:</span> <strong>+91 98200 XXXXX</strong></div>
+            <div><span style="color:var(--text-muted)">Email:</span> <strong>finance@abctraders.com</strong></div>
+            <div><span style="color:var(--text-muted)">Industry:</span> <strong>Industrial Machinery</strong></div>
+            <div><span style="color:var(--text-muted)">Assigned Staff:</span> <span class="badge badge-success">Rahul Sharma</span></div>
+            <div><span style="color:var(--text-muted)">Reviewer Partner:</span> <span class="badge badge-purple">CA Dhiraj Jain</span></div>
+          </div>
+        </div>
+        <div style="margin-top:20px; font-size:12px; color:var(--text-muted); display:flex; justify-content:space-around;">
+          <div><i class="fa-solid fa-bolt" style="color:var(--gold)"></i> Updates here sync instantly across GST, TDS, Invoices & Portal</div>
+          <div><i class="fa-solid fa-lock" style="color:var(--emerald)"></i> Role-restricted password vault with 2FA protection</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: CLIENT ONBOARDING -->
+      <div class="slide-screen" data-slide="7" data-category="Client Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-user-plus"></i> Standardized Intake</div>
+            <h2 class="slide-title">Client Onboarding Wizard</h2>
+            <p class="slide-subtitle">Eliminate messy handovers with an 8-stage automated onboarding wizard</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 07 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 30px 0;">
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-building"></i></div><div class="step-label">1. Basic Info</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-id-card"></i></div><div class="step-label">2. KYC & PAN</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-layer-group"></i></div><div class="step-label">3. Services</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div><div class="step-label">4. Fee Setup</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-tag"></i></div><div class="step-label">5. Assign Staff</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-folder-plus"></i></div><div class="step-label">6. Vault Folder</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-paper-plane"></i></div><div class="step-label">7. Welcome Msg</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-icon" style="color:var(--emerald)"><i class="fa-solid fa-check-double"></i></div><div class="step-label">ACTIVE</div></div>
+        </div>
+        <div class="glass-card" style="font-size:13px; color:var(--text-muted);">
+          <strong style="color:#fff;">What Happens Automatically Upon Submission?</strong>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;">
+            <div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i> Auto-creates Google Drive/Vault structured folder for FY 2026-27.</div>
+            <div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i> Triggers customized WhatsApp & Email Welcome Kit to client.</div>
+            <div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i> Populates recurring tasks for assigned staff member.</div>
+            <div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i> Creates billing profile in the finance ledger.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: CLIENT SERVICE MANAGEMENT -->
+      <div class="slide-screen" data-slide="8" data-category="Client Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-sliders"></i> Multi-Service Matrix</div>
+            <h2 class="slide-title">Client Service Management</h2>
+            <p class="slide-subtitle">One client can have multiple statutory services with distinct managers & recurring billing</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 08 / 52</div>
+        </div>
+        <table class="mock-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Responsible Staff</th>
+              <th>Reviewer</th>
+              <th>Frequency</th>
+              <th>Monthly / Retainer Fee</th>
+              <th>Workflow Trigger</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>GST Filing (GSTR-1 & 3B)</strong></td>
+              <td>Rahul (Staff)</td>
+              <td>Priya (Manager)</td>
+              <td>Monthly</td>
+              <td>₹ 5,000 / mo</td>
+              <td>Auto (1st of month)</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>TDS Monthly & Return (26Q)</strong></td>
+              <td>Amit (Junior)</td>
+              <td>CA Dhiraj Jain</td>
+              <td>Quarterly</td>
+              <td>₹ 3,500 / qtr</td>
+              <td>Auto (Quarter end)</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>Income Tax Return & Audit</strong></td>
+              <td>Neha (Senior)</td>
+              <td>CA Dhiraj Jain</td>
+              <td>Annual</td>
+              <td>₹ 45,000 / yr</td>
+              <td>Manual Trigger</td>
+              <td><span class="badge badge-warning">Upcoming</span></td>
+            </tr>
+            <tr>
+              <td><strong>Statutory Bookkeeping</strong></td>
+              <td>Karan (Staff)</td>
+              <td>Priya (Manager)</td>
+              <td>Monthly</td>
+              <td>₹ 8,000 / mo</td>
+              <td>Auto (Weekly check)</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:20px; font-size:12px; color:var(--accent); background:rgba(0,180,216,0.1); padding:10px 16px; border-radius:8px;">
+          <i class="fa-solid fa-lightbulb"></i> Adding or pausing a service automatically updates task queues, calendars, and billing invoices.
+        </div>
+      </div>
+
+      <!-- SLIDE 9: CLIENT 360 -->
+      <div class="slide-screen" data-slide="9" data-category="Client Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-gauge-high"></i> Unified Cockpit</div>
+            <h2 class="slide-title">Client 360 Enterprise Dashboard</h2>
+            <p class="slide-subtitle">"CA ko client ki complete position ek single screen par."</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 09 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:16px;">
+          <div class="glass-card" style="border-left:4px solid var(--primary);">
+            <div style="font-size:11px; color:var(--text-muted)">Pending Tasks</div>
+            <div style="font-size:22px; font-weight:800; color:#fff;">3 Tasks</div>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--gold);">
+            <div style="font-size:11px; color:var(--text-muted)">Pending Documents</div>
+            <div style="font-size:22px; font-weight:800; color:var(--gold);">2 Bills</div>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--rose);">
+            <div style="font-size:11px; color:var(--text-muted)">Open Notices</div>
+            <div style="font-size:22px; font-weight:800; color:#f87171;">1 Notice (ITR)</div>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--emerald);">
+            <div style="font-size:11px; color:var(--text-muted)">Outstanding Fees</div>
+            <div style="font-size:22px; font-weight:800; color:#34d399;">₹ 12,500</div>
+          </div>
+        </div>
+        <div class="glass-card" style="font-size:12px;">
+          <div style="display:flex; gap:12px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:10px; color:var(--text-muted);">
+            <span style="color:var(--primary); font-weight:700; border-bottom:2px solid var(--primary); padding-bottom:6px;">Timeline & Activity</span>
+            <span>Documents Vault</span>
+            <span>Tax Invoices</span>
+            <span>Communication Trail</span>
+            <span>Notices</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between;"><span style="color:#fff;"><i class="fa-brands fa-whatsapp" style="color:var(--emerald)"></i> Auto WhatsApp sent: August GSTR-3B filed acknowledgement</span><span style="color:var(--text-dim)">Today, 11:20 AM</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#fff;"><i class="fa-solid fa-file-arrow-up" style="color:var(--primary)"></i> Client uploaded September Purchase Register via Portal</span><span style="color:var(--text-dim)">Yesterday, 04:15 PM</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#fff;"><i class="fa-solid fa-receipt" style="color:var(--gold)"></i> Invoice #INV-2026-088 for ₹5,900 generated</span><span style="color:var(--text-dim)">10 Sep, 10:00 AM</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: USER & STAFF MANAGEMENT -->
+      <div class="slide-screen" data-slide="10" data-category="Staff Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-sitemap"></i> Team Organization</div>
+            <h2 class="slide-title">User & Staff Hierarchy</h2>
+            <p class="slide-subtitle">Individual secure logins with tailored dashboards for every member of the CA firm</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 10 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 20px 0;">
+          <div class="flow-step" style="border-color:var(--purple);"><div class="step-icon" style="color:var(--purple)"><i class="fa-solid fa-user-tie"></i></div><div class="step-label">CA Partner<br><small>Full Firm MIS</small></div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step" style="border-color:var(--primary);"><div class="step-icon" style="color:var(--primary)"><i class="fa-solid fa-user-shield"></i></div><div class="step-label">Manager<br><small>Team Allocation</small></div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-check"></i></div><div class="step-label">Senior Staff<br><small>Execution & Review</small></div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-graduate"></i></div><div class="step-label">Articled Assistant<br><small>Task Level View</small></div></div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-id-badge"></i> Personalized Workspaces</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Every employee sees: <strong>My Clients, My Tasks, My Deadlines, My Reviews</strong>.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-shield-halved"></i> Data Security</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Junior staff cannot view entire firm billings or unassigned client databases.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-chart-simple"></i> Daily Time Tracking</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Built-in timesheets calculate staff hours spent per client for profitability analysis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 11: ROLE & PERMISSION -->
+      <div class="slide-screen" data-slide="11" data-category="Security">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-user-lock"></i> Governance</div>
+            <h2 class="slide-title">Granular Role & Permission Matrix</h2>
+            <p class="slide-subtitle">"Staff sirf authorized clients aur data dekh sakta hai."</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 11 / 52</div>
+        </div>
+        <table class="mock-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Client Visibility</th>
+              <th>Fees & Invoices</th>
+              <th>Filing & Submission</th>
+              <th>Delete & Export</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CA Partner</strong></td>
+              <td><span class="badge badge-success">All Firm Clients</span></td>
+              <td><span class="badge badge-success">Full Access + Edit</span></td>
+              <td><span class="badge badge-success">Final Sign-off</span></td>
+              <td><span class="badge badge-success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Manager</strong></td>
+              <td><span class="badge badge-info">Assigned Department</span></td>
+              <td><span class="badge badge-warning">View Only</span></td>
+              <td><span class="badge badge-info">Review & Approve</span></td>
+              <td><span class="badge badge-danger">Restricted</span></td>
+            </tr>
+            <tr>
+              <td><strong>Senior Staff</strong></td>
+              <td><span class="badge badge-info">Assigned Clients Only</span></td>
+              <td><span class="badge badge-danger">Hidden</span></td>
+              <td><span class="badge badge-info">Submit to Reviewer</span></td>
+              <td><span class="badge badge-danger">Restricted</span></td>
+            </tr>
+            <tr>
+              <td><strong>Staff / Article</strong></td>
+              <td><span class="badge badge-info">Assigned Tasks Only</span></td>
+              <td><span class="badge badge-danger">Hidden</span></td>
+              <td><span class="badge badge-info">Draft Working Only</span></td>
+              <td><span class="badge badge-danger">Restricted</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:18px; font-size:12px; color:var(--text-muted);">
+          <i class="fa-solid fa-shield"></i> Complete IP protection: Staff cannot export master phone lists or bulk download client returns to personal drives.
+        </div>
+      </div>
+
+      <!-- SLIDE 12: TASK MANAGEMENT -->
+      <div class="slide-screen" data-slide="12" data-category="Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-list-check"></i> Operational Engine</div>
+            <h2 class="slide-title">Task Management & Kanban Status</h2>
+            <p class="slide-subtitle">Real-time status tracking from assignment to final partner review</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 12 / 52</div>
+        </div>
+        <div class="slide-grid-4">
+          <div class="glass-card" style="border-top:3px solid #38bdf8;">
+            <div style="font-size:12px; font-weight:700; margin-bottom:8px;">IN PROGRESS (4)</div>
+            <div style="background:#131c33; padding:10px; border-radius:8px; margin-bottom:8px; font-size:11px;">
+              <span class="badge badge-danger">High Priority</span>
+              <div style="font-weight:700; margin:6px 0; color:#fff;">GSTR-3B (Aug 2026)</div>
+              <div style="color:var(--text-muted);">ABC Traders</div>
+              <div style="margin-top:6px; display:flex; justify-content:space-between; color:var(--text-dim);">
+                <span>Assigned: Rahul</span>
+                <span style="color:var(--rose);">Due: 20 Sep</span>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card" style="border-top:3px solid var(--gold);">
+            <div style="font-size:12px; font-weight:700; margin-bottom:8px;">WAITING FOR CLIENT (2)</div>
+            <div style="background:#131c33; padding:10px; border-radius:8px; font-size:11px;">
+              <span class="badge badge-warning">Data Pending</span>
+              <div style="font-weight:700; margin:6px 0; color:#fff;">TDS Working Q2</div>
+              <div style="color:var(--text-muted);">Sunrise Enterprises</div>
+              <div style="margin-top:6px; color:var(--gold);"><i class="fa-brands fa-whatsapp"></i> Auto reminder sent</div>
+            </div>
+          </div>
+          <div class="glass-card" style="border-top:3px solid var(--purple);">
+            <div style="font-size:12px; font-weight:700; margin-bottom:8px;">UNDER REVIEW (3)</div>
+            <div style="background:#131c33; padding:10px; border-radius:8px; font-size:11px;">
+              <span class="badge badge-purple">Review Ready</span>
+              <div style="font-weight:700; margin:6px 0; color:#fff;">Tax Audit Form 3CD</div>
+              <div style="color:var(--text-muted);">Kalyan Fabric Mills</div>
+              <div style="margin-top:6px; color:var(--accent);">Reviewer: CA Partner</div>
+            </div>
+          </div>
+          <div class="glass-card" style="border-top:3px solid var(--emerald);">
+            <div style="font-size:12px; font-weight:700; margin-bottom:8px;">COMPLETED (18)</div>
+            <div style="background:#131c33; padding:10px; border-radius:8px; font-size:11px;">
+              <span class="badge badge-success">Acknowledged</span>
+              <div style="font-weight:700; margin:6px 0; color:#fff;">GSTR-1 (Aug 2026)</div>
+              <div style="color:var(--text-muted);">Delta Logistics</div>
+              <div style="margin-top:6px; color:var(--text-dim);">Filed on: 11 Sep</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 13: WORKFLOW ENGINE -->
+      <div class="slide-screen" data-slide="13" data-category="Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-code-fork"></i> Consistency</div>
+            <h2 class="slide-title">Standardized Workflow Engine</h2>
+            <p class="slide-subtitle">"Har Service Ko Standard Workflow Mein Convert Karein — No Steps Skipped"</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 13 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 40px 0;">
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-briefcase"></i></div><div class="step-label">Service Master</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-diagram-project"></i></div><div class="step-label">Standard SOP</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-list-check"></i></div><div class="step-label">Auto Task Tree</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-user-pen"></i></div><div class="step-label">Maker Work</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div><div class="step-label">Checker Review</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-icon"><i class="fa-solid fa-stamp"></i></div><div class="step-label">Partner Approval</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-icon" style="color:var(--emerald);"><i class="fa-solid fa-circle-check"></i></div><div class="step-label">Filing & ACK</div></div>
+        </div>
+        <div class="glass-card" style="font-size:13px; color:var(--text-muted);">
+          <i class="fa-solid fa-check-circle" style="color:var(--emerald); margin-right:6px;"></i>
+          <strong>Quality Assurance:</strong> Even when staff members resign or new articles join, the exact firm procedure is followed without degradation in quality or missed checkpoints.
+        </div>
+      </div>
+
+      <!-- SLIDE 14: GST WORKFLOW -->
+      <div class="slide-screen" data-slide="14" data-category="Statutory Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-file-invoice"></i> GST Module</div>
+            <h2 class="slide-title">GST End-to-End Workflow Pipeline</h2>
+            <p class="slide-subtitle">From automated bill requests to GSTR-3B challan confirmation</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 14 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:8px;">Stage 1: Collection</h4>
+            <p style="font-size:11px; color:var(--text-muted);">System sends automatic WhatsApp request on 1st of every month for Sales & Purchase Registers.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:13px; margin-bottom:8px;">Stage 2: Reconciliation</h4>
+            <p style="font-size:11px; color:var(--text-muted);">GSTR-2B vs Books comparison with auto-categorization of eligible ITC and missing vendor bills.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:8px;">Stage 3: Sign-Off & Filing</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Draft computation sent to client via WhatsApp with payment challan, filed after CA confirmation.</p>
+          </div>
+        </div>
+        <div class="workflow-flow" style="margin-top:25px;">
+          <div class="flow-step"><div class="step-label">Data Request</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Upload Docs</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">2B Matching</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Tax Working</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Review</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Client Approval</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Auto ACK Send</div></div>
+        </div>
+      </div>
+
+      <!-- SLIDE 15: GST RECONCILIATION -->
+      <div class="slide-screen" data-slide="15" data-category="Statutory Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-code-compare"></i> Smart Matching</div>
+            <h2 class="slide-title">GST Reconciliation: 2B vs Purchase Register</h2>
+            <p class="slide-subtitle">Import Excel/CSV data with authorized professional review and decision support</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 15 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:20px;">
+          <div class="glass-card" style="border-left:4px solid var(--emerald);">
+            <div style="font-size:11px; color:var(--text-muted);">Exact Match</div>
+            <div style="font-size:20px; font-weight:800; color:#34d399;">₹ 24,18,900</div>
+            <span style="font-size:10px; color:var(--text-dim);">142 Invoices</span>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--gold);">
+            <div style="font-size:11px; color:var(--text-muted);">Value Mismatch</div>
+            <div style="font-size:20px; font-weight:800; color:#fbbf24;">₹ 48,200</div>
+            <span style="font-size:10px; color:var(--text-dim);">3 Invoices (Round-off)</span>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--rose);">
+            <div style="font-size:11px; color:var(--text-muted);">Missing in 2B</div>
+            <div style="font-size:20px; font-weight:800; color:#f87171;">₹ 1,12,000</div>
+            <span style="font-size:10px; color:var(--text-dim);">Vendor GSTR-1 not filed</span>
+          </div>
+          <div class="glass-card" style="border-left:4px solid var(--purple);">
+            <div style="font-size:11px; color:var(--text-muted);">Missing in Books</div>
+            <div style="font-size:20px; font-weight:800; color:#c084fc;">₹ 18,400</div>
+            <span style="font-size:10px; color:var(--text-dim);">Bank charges / RCM</span>
+          </div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          <strong style="color:#fff;">Professional Decision Support:</strong> One-click generation of vendor communication report highlighting unmatched invoices to be shared directly via WhatsApp to recover input credit.
+        </div>
+      </div>
+
+      <!-- SLIDE 16: TDS MANAGEMENT -->
+      <div class="slide-screen" data-slide="16" data-category="Statutory Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-percent"></i> Direct Tax</div>
+            <h2 class="slide-title">TDS & TCS Management Flow</h2>
+            <p class="slide-subtitle">Section-wise computation, challan verification, and quarterly 24Q/26Q returns</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 16 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 25px 0;">
+          <div class="flow-step"><div class="step-label">TDS Working</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Section Validation</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Challan Generation</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Payment Verification</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Quarterly Return</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Form 16A Issuance</div></div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:8px;">Automatic Deadline Safeguard</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Calculates 7th of every month payment alerts and quarter-end filing dates with automated staff assignment.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:8px;">PAN Verification</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Flags higher rate deductions (20% under 206AA) before filing to eliminate penalty notices.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 17: ITR MANAGEMENT -->
+      <div class="slide-screen" data-slide="17" data-category="Statutory Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-file-invoice-dollar"></i> Income Tax</div>
+            <h2 class="slide-title">ITR Lifecycle & AY Tracking</h2>
+            <p class="slide-subtitle">Document collection to final e-Verification and refund tracker</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 17 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 25px 0;">
+          <div class="flow-step"><div class="step-label">AY Identification</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">AIS/TIS/26AS Sync</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Computation Draft</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Partner Review</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Client Approval</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">ITR Filing</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">e-Verification Log</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px;">
+          <strong style="color:var(--accent);">Eliminate Post-Filing Disputes:</strong> Complete audit trail recording client's WhatsApp confirmation timestamp before final tax computation filing.
+        </div>
+      </div>
+
+      <!-- SLIDE 18: AUDIT MANAGEMENT -->
+      <div class="slide-screen" data-slide="18" data-category="Statutory Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-magnifying-glass-chart"></i> Assurance</div>
+            <h2 class="slide-title">Statutory & Tax Audit Management</h2>
+            <p class="slide-subtitle">Standardized checklists, sampling records, and working paper sign-offs</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 18 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:8px;"><i class="fa-solid fa-check-to-slot"></i> Pre-Audit Checklists</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Form 3CD clauses, CARO 2020 verification matrices, and engagement letters.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:13px; margin-bottom:8px;"><i class="fa-solid fa-folder-tree"></i> Working Paper Vault</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Digitally linked trial balance, sampling schedules, and bank confirmation letters.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:8px;"><i class="fa-solid fa-signature"></i> Partner Review Log</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Clause-by-clause query raising and resolution before UDIN generation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 19: COMPLIANCE COMMAND CENTER -->
+      <div class="slide-screen" data-slide="19" data-category="Command Center">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-bullseye"></i> Statutory Radar</div>
+            <h2 class="slide-title">Compliance Command Center</h2>
+            <p class="slide-subtitle">Single statutory radar covering GST, TDS, ITR, MCA and custom deadlines</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 19 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:15px;">
+          <div class="glass-card" style="text-align:center;"><div style="font-size:24px; font-weight:800; color:var(--rose);">8</div><div style="font-size:11px; color:var(--text-muted);">Due Today</div></div>
+          <div class="glass-card" style="text-align:center;"><div style="font-size:24px; font-weight:800; color:var(--gold);">22</div><div style="font-size:11px; color:var(--text-muted);">Due in 3 Days</div></div>
+          <div class="glass-card" style="text-align:center;"><div style="font-size:24px; font-weight:800; color:var(--emerald);">148</div><div style="font-size:11px; color:var(--text-muted);">Completed this Month</div></div>
+          <div class="glass-card" style="text-align:center;"><div style="font-size:24px; font-weight:800; color:var(--primary);">0</div><div style="font-size:11px; color:var(--text-muted);">Overdue Defaults</div></div>
+        </div>
+        <div class="glass-card">
+          <table class="mock-table">
+            <thead>
+              <tr><th>Statutory Obligation</th><th>Target Period</th><th>Applicable Clients</th><th>Filed</th><th>Pending</th><th>Days Left</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>GSTR-3B Filing</strong></td><td>August 2026</td><td>68 Clients</td><td>46 Filed</td><td>22 Pending</td><td><span class="badge badge-warning">4 Days Left</span></td></tr>
+              <tr><td><strong>TDS Payment</strong></td><td>August 2026</td><td>42 Clients</td><td>42 Filed</td><td>0 Pending</td><td><span class="badge badge-success">Completed</span></td></tr>
+              <tr><td><strong>ITR Non-Audit</strong></td><td>AY 2026-27</td><td>210 Clients</td><td>208 Filed</td><td>2 Pending</td><td><span class="badge badge-danger">1 Day Left</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SLIDE 20: CLIENT DATA REQUEST -->
+      <div class="slide-screen" data-slide="20" data-category="Communication">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-paper-plane"></i> Data Engine</div>
+            <h2 class="slide-title">Client Data Request Engine</h2>
+            <p class="slide-subtitle">"Stop Chasing Clients Manually" — Automated request and tracking loop</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 20 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 25px 0;">
+          <div class="flow-step"><div class="step-label">Select Client</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Select Service</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Checklist Items</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Template Preview</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Dispatch (WA + Email)</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Direct Upload Link</div></div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card"><span class="badge badge-info">Sent</span><p style="font-size:11px; margin-top:8px;">Instant notification with 1-click mobile upload link (no password needed).</p></div>
+          <div class="glass-card"><span class="badge badge-warning">Auto Follow-up</span><p style="font-size:11px; margin-top:8px;">Automated reminder triggered at 48 hours and 24 hours prior to deadline.</p></div>
+          <div class="glass-card"><span class="badge badge-success">Live Status</span><p style="font-size:11px; margin-top:8px;">Staff gets real-time notification the moment client uploads the required files.</p></div>
+        </div>
+      </div>
+
+      <!-- SLIDE 21: DOCUMENT MANAGEMENT -->
+      <div class="slide-screen" data-slide="21" data-category="Documents">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-folder-closed"></i> Organized Hierarchy</div>
+            <h2 class="slide-title">Enterprise Document Vault</h2>
+            <p class="slide-subtitle">Auto-structured hierarchy: Firm → Client → FY → Service → Period</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 21 / 52</div>
+        </div>
+        <div class="glass-card" style="font-family:var(--font-mono); font-size:13px; line-height:1.8;">
+          <div style="color:var(--accent);"><i class="fa-solid fa-folder"></i> ABC TRADERS PVT LTD</div>
+          <div style="margin-left:20px; color:#93c5fd;">└── <i class="fa-solid fa-folder"></i> FY 2026-27</div>
+          <div style="margin-left:45px; color:#fde047;">├── <i class="fa-solid fa-folder"></i> GST</div>
+          <div style="margin-left:70px; color:#cbd5e1;">├── <i class="fa-solid fa-file-pdf"></i> August_2026_GSTR3B_Filed.pdf <span class="badge badge-success">Verified</span></div>
+          <div style="margin-left:70px; color:#cbd5e1;">└── <i class="fa-solid fa-file-excel"></i> Sales_Purchase_Recon.xlsx</div>
+          <div style="margin-left:45px; color:#fde047;">├── <i class="fa-solid fa-folder"></i> Income Tax</div>
+          <div style="margin-left:70px; color:#cbd5e1;">└── <i class="fa-solid fa-file-pdf"></i> Computation_AY26-27_Final.pdf</div>
+          <div style="margin-left:45px; color:#fde047;">└── <i class="fa-solid fa-folder"></i> Permanent KYC</div>
+          <div style="margin-left:70px; color:#cbd5e1;">└── <i class="fa-solid fa-file-pdf"></i> PAN_COI_MOA_Bundle.pdf</div>
+        </div>
+        <div style="margin-top:15px; font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;">
+          <span><i class="fa-solid fa-magnifying-glass"></i> Full-text search inside scanned PDFs</span>
+          <span><i class="fa-solid fa-shield-virus"></i> Cloud encrypted backup</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 22: NOTICE MANAGEMENT -->
+      <div class="slide-screen" data-slide="22" data-category="Notices">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-bell" style="color:var(--rose)"></i> Critical Module</div>
+            <h2 class="slide-title">Statutory Notice Management</h2>
+            <p class="slide-subtitle">Never miss a statutory notice hearing or due date again</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 22 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 25px 0;">
+          <div class="flow-step"><div class="step-label">Notice Upload</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Client Auto-Match</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Due Date Log</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Staff Assigned</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Draft Response</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Partner Sign-off</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Submitted & Closed</div></div>
+        </div>
+        <div class="glass-card" style="border-left:4px solid var(--rose);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span class="badge badge-danger">High Risk</span>
+              <strong style="margin-left:8px;">Income Tax Sec 148A Notice — M/s SuperTech Ltd</strong>
+            </div>
+            <div style="color:var(--rose); font-weight:700; font-size:12px;"><i class="fa-solid fa-hourglass-half"></i> Due in 5 Days</div>
+          </div>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
+            Escalation engine sends SMS/WhatsApp to CA Partner 72h before deadline if no response draft has been submitted.
+          </p>
+        </div>
+      </div>
+
+      <!-- SLIDE 23: AI NOTICE READER -->
+      <div class="slide-screen" data-slide="23" data-category="AI Module">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple)"></i> CA Supervised AI</div>
+            <h2 class="slide-title">AI Notice Reader & Data Extraction</h2>
+            <p class="slide-subtitle">AI-assisted analysis with mandatory human professional review & verification</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 23 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card" style="background:#091224;">
+            <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><i class="fa-solid fa-file-pdf"></i> Uploaded Notice PDF</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:12px; border-radius:8px;">
+              DIN: ITBA/AST/S/148A/2026-27/...<br>
+              Subject: Notice under clause (b) of Section 148A...<br>
+              AY: 2020-21 | PAN: AAACB9876K...<br>
+              Compliance Date: 28th September 2026...
+            </div>
+          </div>
+          <div class="glass-card" style="border-color:var(--purple);">
+            <div style="font-size:12px; color:var(--purple); font-weight:700; margin-bottom:8px;"><i class="fa-solid fa-robot"></i> Extracted Parameters (Verified by CA)</div>
+            <ul style="font-size:11px; color:#cbd5e1; list-style:none; line-height:2;">
+              <li>• <strong>Notice Type:</strong> Section 148A(b) Show Cause</li>
+              <li>• <strong>Assessment Year:</strong> 2020-21</li>
+              <li>• <strong>Statutory Due Date:</strong> 28-Sep-2026 (Auto-creates calendar event)</li>
+              <li>• <strong>Allegation / Issue:</strong> Cash deposits exceeding ₹ 50 Lakhs</li>
+              <li>• <strong>Action Required:</strong> Source explanation & bank reconciliation</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:15px; font-size:11px; color:var(--gold); text-align:center;">
+          <i class="fa-solid fa-triangle-exclamation"></i> <strong>Professional Guardrail:</strong> AI extracts information for speed; legal interpretations and submissions remain under the CA's professional sign-off.
+        </div>
+      </div>
+
+      <!-- SLIDE 24: WHATSAPP AUTOMATION -->
+      <div class="slide-screen" data-slide="24" data-category="Communication">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> Official Client Bridge</div>
+            <h2 class="slide-title">WhatsApp Automation Engine</h2>
+            <p class="slide-subtitle">Personalized statutory reminders, document links, and acknowledgements</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 24 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:10px;">Dynamic Variables</h4>
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--accent); line-height:2;">
+              {{client_name}}<br>
+              {{service_name}}<br>
+              {{period}}<br>
+              {{due_date}}<br>
+              {{outstanding_amount}}
+            </div>
+            <div style="margin-top:15px; font-size:11px; color:var(--text-muted);">Dispatched using verified WhatsApp Business API without phone blockage risk.</div>
+          </div>
+          <div class="glass-card" style="background:#0c1e19; border-color:#059669;">
+            <div style="font-size:11px; color:#34d399; margin-bottom:6px;"><i class="fa-brands fa-whatsapp"></i> Live Message Preview</div>
+            <div style="font-size:12px; color:#e2e8f0; line-height:1.6; background:rgba(0,0,0,0.3); padding:12px; border-radius:10px;">
+              "Dear <strong>Mr. Rajesh (ABC Traders)</strong>,<br><br>
+              Your <strong>GSTR-3B</strong> for <strong>August 2026</strong> is due on <strong>20-Sep-2026</strong>. Tax payable is <strong>₹ 32,450</strong>.<br><br>
+              Kindly click below to view challan & approve for filing:<br>
+              <span style="color:var(--primary); text-decoration:underline;">https://caerp.in/portal/ack/7821</span><br><br>
+              — <em>CA Dhiraj Jain & Associates</em>"
+            </div>
+            <div style="margin-top:8px; font-size:10px; color:#34d399;"><i class="fa-solid fa-check-double"></i> Delivered & Read in Real-Time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 25: EMAIL MANAGEMENT -->
+      <div class="slide-screen" data-slide="25" data-category="Communication">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-envelope"></i> Formal Records</div>
+            <h2 class="slide-title">Email Management & Drafting</h2>
+            <p class="slide-subtitle">Branded corporate communication with complete deliverability tracking</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 25 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 30px 0;">
+          <div class="flow-step"><div class="step-label">Draft Template</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">AI Assistant Polish</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">CA Partner Preview</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Secure Send</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Logged to Client 360</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          Every email sent from the ERP automatically includes your firm's professional disclaimer, header, contact numbers, and gets logged directly into the client's timeline.
+        </div>
+      </div>
+
+      <!-- SLIDE 26: COMMUNICATION LOG -->
+      <div class="slide-screen" data-slide="26" data-category="Audit Trail">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-timeline"></i> Zero Disputes</div>
+            <h2 class="slide-title">Unified Communication Log</h2>
+            <p class="slide-subtitle">WhatsApp, Emails, Calls, Meetings & Portal queries in one chronological ledger</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 26 / 52</div>
+        </div>
+        <div class="glass-card">
+          <table class="mock-table">
+            <thead>
+              <tr><th>Channel</th><th>Staff / Sender</th><th>Recipient</th><th>Subject / Summary</th><th>Timestamp</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> WhatsApp</td>
+                <td>System Auto</td>
+                <td>Director (+91 98200XXXXX)</td>
+                <td>GST Purchase Register Data Request</td>
+                <td>01-Sep 10:00 AM</td>
+                <td><span class="badge badge-success">Read</span></td>
+              </tr>
+              <tr>
+                <td><i class="fa-solid fa-envelope" style="color:#38bdf8"></i> Email</td>
+                <td>Rahul Sharma</td>
+                <td>accounts@abctraders.com</td>
+                <td>Draft Tax Computation for AY 2026-27</td>
+                <td>05-Sep 03:40 PM</td>
+                <td><span class="badge badge-info">Delivered</span></td>
+              </tr>
+              <tr>
+                <td><i class="fa-solid fa-phone" style="color:var(--gold)"></i> Call Log</td>
+                <td>Priya (Manager)</td>
+                <td>Rajesh Shah</td>
+                <td>Discussed Sec 148A hearing response points</td>
+                <td>08-Sep 05:15 PM</td>
+                <td><span class="badge badge-purple">Logged (12m)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SLIDE 27: FEES MANAGEMENT -->
+      <div class="slide-screen" data-slide="27" data-category="Finance">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-wallet"></i> Firm Cashflow</div>
+            <h2 class="slide-title">Fees & Retainer Management</h2>
+            <p class="slide-subtitle">Automate recurring retainers, out-of-pocket expenses, and statutory billing cycles</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 27 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:15px;">
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Total Billed (FY)</div><div style="font-size:22px; font-weight:800; color:#fff;">₹ 48.5 L</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Collected</div><div style="font-size:22px; font-weight:800; color:#34d399;">₹ 41.2 L</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Outstanding</div><div style="font-size:22px; font-weight:800; color:#fbbf24;">₹ 7.3 L</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Overdue > 60 Days</div><div style="font-size:22px; font-weight:800; color:#f87171;">₹ 1.8 L</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          <i class="fa-solid fa-coins" style="color:var(--gold); margin-right:6px;"></i>
+          <strong>No Unbilled Work:</strong> Extra work like notice replies, appeal drafting, and revised filings are automatically prompted for billing when completed.
+        </div>
+      </div>
+
+      <!-- SLIDE 28: INVOICE MANAGEMENT -->
+      <div class="slide-screen" data-slide="28" data-category="Finance">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-file-invoice"></i> Professional Billing</div>
+            <h2 class="slide-title">GST Compliant Invoicing Engine</h2>
+            <p class="slide-subtitle">1-Click generation with SAC codes, e-Invoicing readiness, and payment QR codes</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 28 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <strong>INVOICE #INV-2026-092</strong>
+              <span class="badge badge-warning">Unpaid</span>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); line-height:1.8;">
+              Client: ABC Traders Pvt Ltd<br>
+              GSTIN: 27AAACA1234F1Z5<br>
+              SAC Code: 998222 (Legal & Accounting Services)<br>
+              Subtotal: ₹ 10,000.00<br>
+              CGST + SGST (18%): ₹ 1,800.00<br>
+              <strong>Total Invoice Amount: ₹ 11,800.00</strong>
+            </div>
+          </div>
+          <div class="glass-card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+            <div style="width:100px; height:100px; background:#fff; border-radius:8px; display:grid; place-items:center; color:#000; font-size:38px; margin-bottom:10px;">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div style="font-size:12px; font-weight:700; color:var(--accent);">UPI & Net Banking Ready QR</div>
+            <p style="font-size:11px; color:var(--text-muted);">Client scans, pays directly to your CA firm account, and invoice updates instantly.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 29: COLLECTION AUTOMATION -->
+      <div class="slide-screen" data-slide="29" data-category="Finance">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-hand-holding-dollar"></i> Cashflow Recovery</div>
+            <h2 class="slide-title">Automated Collection & Follow-up Engine</h2>
+            <p class="slide-subtitle">Recover fees 40% faster without awkward personal phone calls</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 29 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 30px 0;">
+          <div class="flow-step"><div class="step-label">Invoice Created</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Due Date Alert</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Soft Reminder</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">+15 Days Notice</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Partner Escalation</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Payment Received</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          Automated collection messages are respectful, professional, and contain instant payment links with PDF invoice copy attached.
+        </div>
+      </div>
+
+      <!-- SLIDE 30: WORKING PAPERS -->
+      <div class="slide-screen" data-slide="30" data-category="Workflows">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-book-bookmark"></i> Standard Documentation</div>
+            <h2 class="slide-title">Standardized Working Papers</h2>
+            <p class="slide-subtitle">Standardized templates for TDS, GST, Bank Reconciliation and Balance Sheet schedules</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 30 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:6px;">Pre-Formatted Schedules</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Fixed assets schedule with depreciation under Companies Act & IT Act computed side-by-side.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:6px;">Digital Cross-Referencing</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Every working paper links directly to supporting vouchers and invoices stored in the vault.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--purple); font-size:13px; margin-bottom:6px;">Partner Sign-off Lock</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Once reviewed and signed by CA Partner, working papers are timestamp-locked against alterations.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 31: AI CLIENT ASSISTANT -->
+      <div class="slide-screen" data-slide="31" data-category="AI Suite">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-brain" style="color:var(--primary)"></i> Natural Language MIS</div>
+            <h2 class="slide-title">AI Client Assistant (Conversational Query)</h2>
+            <p class="slide-subtitle">Ask questions about your firm in plain Hindi/English and get instant answers</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 31 / 52</div>
+        </div>
+        <div class="glass-card" style="background:#0a1329;">
+          <div style="font-size:12px; margin-bottom:12px; color:var(--text-muted);">Conversational ERP Search Interface:</div>
+          <div style="display:flex; flex-direction:column; gap:12px; font-size:12px;">
+            <div style="align-self:flex-end; background:#1b2d56; padding:10px 14px; border-radius:12px; max-width:80%;">
+              <strong>CA Partner:</strong> "ABC Traders ke kitne pending documents hain aur kaunse GST tasks overdue hain?"
+            </div>
+            <div style="align-self:flex-start; background:#101a33; border:1px solid var(--primary-glow); padding:12px 16px; border-radius:12px; max-width:85%;">
+              <strong style="color:var(--accent);"><i class="fa-solid fa-robot"></i> AI Assistant:</strong><br>
+              "ABC Traders Pvt Ltd ke pass <strong>2 pending documents</strong> hain (August Purchase Register & Electricity Bill).<br>
+              Inka August 2026 GSTR-3B task <strong>Rahul Sharma</strong> ko assigned hai aur <strong>20 September</strong> tak due hai (Status: In Progress)."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 32: CA KNOWLEDGE AI -->
+      <div class="slide-screen" data-slide="32" data-category="AI Suite">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-book-open-reader"></i> Firm SOP Vault</div>
+            <h2 class="slide-title">CA Knowledge AI: Firm SOP & Guidelines</h2>
+            <p class="slide-subtitle">Train AI on your firm's internal SOPs, templates, and checklists without leaking data</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 32 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card">
+            <h4 style="color:var(--accent); font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-shield-halved"></i> Internal Knowledge Sources</h4>
+            <ul style="font-size:12px; color:var(--text-muted); list-style:none; line-height:2;">
+              <li><i class="fa-solid fa-check" style="color:var(--emerald)"></i> Firm Audit Standard Operating Procedures</li>
+              <li><i class="fa-solid fa-check" style="color:var(--emerald)"></i> Client Engagement Agreement Templates</li>
+              <li><i class="fa-solid fa-check" style="color:var(--emerald)"></i> Standard Tax Representation Drafts</li>
+              <li><i class="fa-solid fa-check" style="color:var(--emerald)"></i> Internal Vetting & Sampling Policies</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-users"></i> Instant Staff Training</h4>
+            <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">
+              Articles can immediately query: "What is our firm's sampling percentage for cash expenses?" or "How do we draft an extension letter for GST summons?" without disturbing the CA Partner every 10 minutes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 33: AI DAILY ASSISTANT -->
+      <div class="slide-screen" data-slide="33" data-category="AI Suite">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-sun" style="color:var(--gold)"></i> Morning Command</div>
+            <h2 class="slide-title">AI Daily Morning Briefing Dashboard</h2>
+            <p class="slide-subtitle">Start your day with an automated executive snapshot generated at 8:00 AM</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 33 / 52</div>
+        </div>
+        <div class="glass-card" style="background:#0d1833;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px;">
+            <strong style="color:var(--accent); font-size:14px;"><i class="fa-solid fa-mug-hot"></i> Good Morning, CA Dhiraj Jain</strong>
+            <span style="font-size:11px; color:var(--text-muted);">Firm Briefing: 11 September 2026</span>
+          </div>
+          <div class="slide-grid-4" style="margin:16px 0;">
+            <div style="font-size:12px;"><strong>8</strong> Deadlines this week</div>
+            <div style="font-size:12px; color:var(--rose);"><strong>3</strong> Overdue tasks</div>
+            <div style="font-size:12px; color:var(--gold);"><strong>4</strong> Reviews awaiting approval</div>
+            <div style="font-size:12px; color:var(--emerald);"><strong>₹ 2.4 L</strong> Expected fee collections</div>
+          </div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.7;">
+            <strong style="color:#fff;">Top Morning Priorities:</strong><br>
+            1. Form 3CD review for Kalyan Fabric Mills pending partner sign-off (Audit deadline: 2 days).<br>
+            2. Rahul has 4 GST tasks waiting for purchase reconciliations.<br>
+            3. Follow-up triggered for ₹1.2L outstanding fees from Delta Logistics.
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 34: STAFF WORKLOAD -->
+      <div class="slide-screen" data-slide="34" data-category="Team Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-scale-balanced"></i> Resource Allocation</div>
+            <h2 class="slide-title">Staff Workload Distribution Matrix</h2>
+            <p class="slide-subtitle">Identify bottlenecks and prevent burnout with live capacity balancing</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 34 / 52</div>
+        </div>
+        <table class="mock-table">
+          <thead>
+            <tr><th>Team Member</th><th>Role</th><th>Active Tasks</th><th>Overdue</th><th>Under Review</th><th>Workload Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Rahul Sharma</strong></td><td>Senior Staff</td><td>14 Tasks</td><td>2</td><td>3</td><td><span class="badge badge-danger">Overloaded (92%)</span></td></tr>
+            <tr><td><strong>Priya Patel</strong></td><td>Manager</td><td>8 Tasks</td><td>0</td><td>5</td><td><span class="badge badge-success">Optimal (70%)</span></td></tr>
+            <tr><td><strong>Amit Verma</strong></td><td>Articled Assistant</td><td>4 Tasks</td><td>0</td><td>1</td><td><span class="badge badge-info">Available (40%)</span></td></tr>
+            <tr><td><strong>Neha Joshi</strong></td><td>Senior Staff</td><td>9 Tasks</td><td>1</td><td>2</td><td><span class="badge badge-warning">Moderate (78%)</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:16px; font-size:12px; color:var(--accent);">
+          <i class="fa-solid fa-arrows-split-up-and-left"></i> Drag & drop re-assignment allows partners to instantly shift tasks from overloaded members to available staff.
+        </div>
+      </div>
+
+      <!-- SLIDE 35: STAFF PERFORMANCE -->
+      <div class="slide-screen" data-slide="35" data-category="Team Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-chart-line"></i> Productivity MIS</div>
+            <h2 class="slide-title">Staff Performance & Efficiency Analytics</h2>
+            <p class="slide-subtitle">Track turnaround time, error rates, and client satisfaction per staff member</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 35 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:6px;">Average Turnaround Time</h4>
+            <div style="font-size:22px; font-weight:800; color:#fff;">2.4 Days</div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">From document receipt to initial working paper draft completion.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:6px;">Review Pass Rate</h4>
+            <div style="font-size:22px; font-weight:800; color:#fff;">91.4%</div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Tasks approved by Manager/Partner in the first review cycle.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--purple); font-size:13px; margin-bottom:6px;">On-Time Compliance</h4>
+            <div style="font-size:22px; font-weight:800; color:#fff;">98.8%</div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Returns and statutory forms filed prior to penalty deadlines.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 36: CLIENT HEALTH -->
+      <div class="slide-screen" data-slide="36" data-category="Client Management">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-heart-pulse"></i> Relationship Radar</div>
+            <h2 class="slide-title">Client Health Scorecard</h2>
+            <p class="slide-subtitle">Categorize clients into Healthy, Attention, and High Risk based on operational factors</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 36 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card" style="border-top:3px solid var(--emerald);">
+            <div style="display:flex; justify-content:space-between;"><span class="badge badge-success">HEALTHY</span><span style="font-weight:700;">84 Clients</span></div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">Timely document submission, prompt fee payments, zero compliance disputes.</p>
+          </div>
+          <div class="glass-card" style="border-top:3px solid var(--gold);">
+            <div style="display:flex; justify-content:space-between;"><span class="badge badge-warning">ATTENTION</span><span style="font-weight:700;">18 Clients</span></div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">Frequent reminders required for bills, occasional payment delays (30-45 days).</p>
+          </div>
+          <div class="glass-card" style="border-top:3px solid var(--rose);">
+            <div style="display:flex; justify-content:space-between;"><span class="badge badge-danger">HIGH RISK</span><span style="font-weight:700;">6 Clients</span></div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">Fee dues > 90 days, repeated penalty risk, responsive only at last minute.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 37: CLIENT PROFITABILITY -->
+      <div class="slide-screen" data-slide="37" data-category="Management MIS">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-chart-pie"></i> Profit Engine</div>
+            <h2 class="slide-title">Client Profitability Matrix (Effort vs Revenue)</h2>
+            <p class="slide-subtitle">Know which clients generate firm profits and which drain staff hours</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 37 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:8px;">High Revenue / Low Effort (Stars)</h4>
+            <p style="font-size:12px; color:var(--text-muted);">IT & Service firms with automated accounts, clean books, prompt payments.</p>
+            <div style="margin-top:10px; font-size:11px; color:#34d399;">Action: Retain with priority partner relationship management.</div>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--rose); font-size:13px; margin-bottom:8px;">Low Revenue / High Effort (Drains)</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Traders with thousands of raw cash vouchers, messy data, paying old legacy fees.</p>
+            <div style="margin-top:10px; font-size:11px; color:#f87171;">Action: Trigger automated Fee Revision proposal.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 38: FEE REVISION ASSISTANT -->
+      <div class="slide-screen" data-slide="38" data-category="Management MIS">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-arrow-trend-up"></i> Revenue Growth</div>
+            <h2 class="slide-title">Fee Revision Assistant</h2>
+            <p class="slide-subtitle">"Services Increased + Workload Increased + Fee Unchanged = Fee Review Recommended"</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 38 / 52</div>
+        </div>
+        <div class="glass-card" style="font-size:13px; color:var(--text-muted); line-height:1.8;">
+          <div style="background:rgba(0,180,216,0.1); padding:14px; border-radius:10px; border-left:4px solid var(--primary); margin-bottom:15px;">
+            <strong style="color:#fff;">ERP Recommendation Alert:</strong><br>
+            "Client <strong>ABC Traders</strong> turnover increased from ₹ 3 Cr to ₹ 11 Cr over 2 years. Monthly purchase invoice volume grew from 40 to 220 invoices. Fee has remained ₹ 5,000/month since 2024.<br>
+            <span style="color:var(--accent);">Suggested Revision: ₹ 9,500/month.</span>"
+          </div>
+          <div style="font-size:12px; color:var(--gold);">
+            <i class="fa-solid fa-shield"></i> <strong>Important:</strong> ERP provides objective workload metrics; CA Partner maintains complete discretion to approve and send.
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 39: CLIENT RISK & CHURN PREDICTOR -->
+      <div class="slide-screen" data-slide="39" data-category="Management MIS">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-user-xmark" style="color:var(--rose)"></i> Retention</div>
+            <h2 class="slide-title">Client Risk & Churn Predictor</h2>
+            <p class="slide-subtitle">Detect early warning indicators before a client leaves your firm</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 39 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--rose); font-size:13px; margin-bottom:6px;">Communication Drop</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Sudden delays in replying to data queries or portal inactivity over 45 days.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:13px; margin-bottom:6px;">Service Disconnections</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Requesting NOCs or pulling out bookkeeping while keeping only annual filing.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:6px;">Payment Disputes</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Withholding monthly retainer pending trivial adjustments.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 40: MANAGEMENT DASHBOARD (CA PARTNER) -->
+      <div class="slide-screen" data-slide="40" data-category="Command Center">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-crown" style="color:var(--gold)"></i> Partner View</div>
+            <h2 class="slide-title">CA Partner Executive Command Center</h2>
+            <p class="slide-subtitle">Complete real-time birds-eye view of your entire practice in one screen</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 40 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:15px;">
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Total Clients</div><div style="font-size:24px; font-weight:800; color:#fff;">248</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Active Workflows</div><div style="font-size:24px; font-weight:800; color:var(--primary);">312</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Firm Revenue (MTD)</div><div style="font-size:24px; font-weight:800; color:var(--emerald);">₹ 6.85 L</div></div>
+          <div class="glass-card"><div style="font-size:11px; color:var(--text-muted)">Firm Health Index</div><div style="font-size:24px; font-weight:800; color:var(--accent);">96.4%</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          No more calling staff every morning. The partner opens the ERP and knows exact compliance status, team productivity, pending reviews, and uncollected revenue.
+        </div>
+      </div>
+
+      <!-- SLIDE 41: CLIENT PORTAL -->
+      <div class="slide-screen" data-slide="41" data-category="Client Experience">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-mobile-screen"></i> Modern Experience</div>
+            <h2 class="slide-title">Client-Side Experience Portal</h2>
+            <p class="slide-subtitle">Branded white-label self-service portal for your clients</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 41 / 52</div>
+        </div>
+        <div class="slide-grid-3">
+          <div class="glass-card">
+            <h4 style="color:var(--primary); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-cloud-arrow-up"></i> Document Dropzone</h4>
+            <p style="font-size:11px; color:var(--text-muted);">Clients drag & drop bank statements and purchase bills directly from phone or laptop.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--emerald); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-file-circle-check"></i> Filed Acknowledgements</h4>
+            <p style="font-size:11px; color:var(--text-muted);">24/7 access to download past ITR-V, GSTR-3B receipts, and audited financial statements.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="color:var(--gold); font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-credit-card"></i> Invoices & Receipts</h4>
+            <p style="font-size:11px; color:var(--text-muted);">View pending fee invoices, make instant UPI payments, and download payment receipts.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 42: NOTIFICATION CENTER -->
+      <div class="slide-screen" data-slide="42" data-category="Automation">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-bell"></i> Real-time Alerts</div>
+            <h2 class="slide-title">Proactive Notification Center</h2>
+            <p class="slide-subtitle">Contextual notifications sent across Web, WhatsApp, and Email</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 42 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card" style="font-size:12px; line-height:2;">
+            <strong style="color:var(--primary);">Staff & Partner Triggers:</strong><br>
+            • Task assigned / re-assigned<br>
+            • Client uploaded requested documents<br>
+            • Task pending partner review > 24h<br>
+            • New notice uploaded with upcoming hearing
+          </div>
+          <div class="glass-card" style="font-size:12px; line-height:2;">
+            <strong style="color:var(--emerald);">Client Triggers:</strong><br>
+            • Monthly statutory return filed acknowledgement<br>
+            • Missing document reminders<br>
+            • New tax fee invoice issued<br>
+            • Tax advance payment deadline approaching
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 43: GOOGLE CALENDAR / SCHEDULING -->
+      <div class="slide-screen" data-slide="43" data-category="Integration">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-calendar-days"></i> Schedule Sync</div>
+            <h2 class="slide-title">Google Calendar & Statutory Schedule Sync</h2>
+            <p class="slide-subtitle">Two-way sync for hearings, client meetings, and statutory due dates</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 43 / 52</div>
+        </div>
+        <div class="glass-card" style="font-size:13px; color:var(--text-muted);">
+          <div style="display:flex; justify-content:space-around; align-items:center; margin-bottom:15px; font-size:24px; color:var(--accent);">
+            <i class="fa-brands fa-google"></i>
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <i class="fa-solid fa-cubes"></i>
+          </div>
+          Statutory dates and assigned hearings automatically sync to CA Partner and Manager mobile calendars. Prevents double bookings and ensures full preparation before every hearing.
+        </div>
+      </div>
+
+      <!-- SLIDE 44: AUTOMATION ENGINE -->
+      <div class="slide-screen" data-slide="44" data-category="Automation">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-bolt" style="color:var(--gold)"></i> Zero Manual Clicks</div>
+            <h2 class="slide-title">Firm-Wide Automation Rule Engine</h2>
+            <p class="slide-subtitle">"If this happens, execute that automatically without human intervention"</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 44 / 52</div>
+        </div>
+        <div class="glass-card" style="font-size:12px; line-height:2.2; color:#cbd5e1;">
+          <div><i class="fa-solid fa-play" style="color:var(--emerald); margin-right:8px;"></i> <strong>NEW CLIENT ADDED</strong> → Auto-creates KYC folder + Triggers Welcome WhatsApp + Assigns Manager</div>
+          <div><i class="fa-solid fa-play" style="color:var(--emerald); margin-right:8px;"></i> <strong>MONTH COMMENCES</strong> → Generates 68 GST recurring tasks + Dispatches Purchase bill requests</div>
+          <div><i class="fa-solid fa-play" style="color:var(--emerald); margin-right:8px;"></i> <strong>RETURN FILED</strong> → Auto-sends ACK to client + Generates invoice + Marks task closed</div>
+          <div><i class="fa-solid fa-play" style="color:var(--emerald); margin-right:8px;"></i> <strong>INVOICE OVERDUE (15D)</strong> → Triggers polite WhatsApp collection reminder with UPI link</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 45: APPROVAL SYSTEM -->
+      <div class="slide-screen" data-slide="45" data-category="Governance">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-stamp"></i> Maker-Checker</div>
+            <h2 class="slide-title">5-Stage Approval & Audit Trail System</h2>
+            <p class="slide-subtitle">Draft → Preview → Approve → Execute → Audit Logged</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 45 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 30px 0;">
+          <div class="flow-step"><div class="step-label">Draft Preparation</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Manager Preview</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Partner Approval</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Client Dispatch</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Immutable Audit Log</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          Every bulk WhatsApp message, notice submission draft, and fee change has a documented audit trail: who initiated, who approved, and when it occurred.
+        </div>
+      </div>
+
+      <!-- SLIDE 46: REPORTING & MIS -->
+      <div class="slide-screen" data-slide="46" data-category="MIS Suite">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-table-list"></i> Business Intelligence</div>
+            <h2 class="slide-title">Enterprise MIS & Reporting Suite</h2>
+            <p class="slide-subtitle">Exportable to Excel, PDF, and interactive visual dashboards</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 46 / 52</div>
+        </div>
+        <div class="slide-grid-4">
+          <div class="glass-card"><h5 style="color:var(--primary); font-size:12px; margin-bottom:4px;">Task MIS</h5><p style="font-size:11px; color:var(--text-muted);">Completed vs pending by service and employee.</p></div>
+          <div class="glass-card"><h5 style="color:var(--emerald); font-size:12px; margin-bottom:4px;">Collection Aging</h5><p style="font-size:11px; color:var(--text-muted);">30 / 60 / 90 / 180+ days receivables breakdown.</p></div>
+          <div class="glass-card"><h5 style="color:var(--gold); font-size:12px; margin-bottom:4px;">Compliance MIS</h5><p style="font-size:11px; color:var(--text-muted);">Statutory return filing dates and delay metrics.</p></div>
+          <div class="glass-card"><h5 style="color:var(--purple); font-size:12px; margin-bottom:4px;">Staff Timesheet</h5><p style="font-size:11px; color:var(--text-muted);">Billable vs non-billable hours logged per client.</p></div>
+        </div>
+      </div>
+
+      <!-- SLIDE 47: COMPLETE CLIENT JOURNEY -->
+      <div class="slide-screen" data-slide="47" data-category="Journeys">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-route"></i> End-to-End</div>
+            <h2 class="slide-title">The Complete 360° Client Journey</h2>
+            <p class="slide-subtitle">From first handshake to lifetime recurring practice engagement</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 47 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 20px 0;">
+          <div class="flow-step"><div class="step-label">Onboarding</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Services</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Staff Assign</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Auto Tasks</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Data Intake</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Execution</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Filing</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Invoice</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Payment</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          Every touchpoint is organized, professional, and transparent. The client experiences corporate-grade service delivery from your firm.
+        </div>
+      </div>
+
+      <!-- SLIDE 48: COMPLETE STAFF JOURNEY -->
+      <div class="slide-screen" data-slide="48" data-category="Journeys">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-user-gear"></i> Daily Workflow</div>
+            <h2 class="slide-title">The Complete Staff Daily Journey</h2>
+            <p class="slide-subtitle">Clear priorities every morning without confusion or waiting for instructions</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 48 / 52</div>
+        </div>
+        <div class="workflow-flow" style="margin: 20px 0;">
+          <div class="flow-step"><div class="step-label">Login</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">My Day Queue</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Check Data</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Execute Working</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Submit Review</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><div class="step-label">Fix Points</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="border-color:var(--emerald);"><div class="step-label">Mark Completed</div></div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted);">
+          Staff arrive at work, see their exact prioritized checklist, and execute tasks without waiting for daily instructions from senior partners.
+        </div>
+      </div>
+
+      <!-- SLIDE 49: BEFORE VS AFTER ERP -->
+      <div class="slide-screen" data-slide="49" data-category="Transformation">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-code-compare" style="color:var(--gold)"></i> Impact Analysis</div>
+            <h2 class="slide-title">Before vs After CA Practice ERP</h2>
+            <p class="slide-subtitle">The real operational shift in a CA firm after adoption</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 49 / 52</div>
+        </div>
+        <div class="slide-grid-2">
+          <div class="glass-card" style="border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.03);">
+            <h4 style="color:#f87171; font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-circle-xmark"></i> TRADITIONAL CA FIRM (BEFORE)</h4>
+            <ul style="font-size:12px; color:#cbd5e1; list-style:none; line-height:2.1;">
+              <li>• 15+ disconnected Excel sheets with duplicate data</li>
+              <li>• Clients chased manually on personal WhatsApp</li>
+              <li>• No central notice tracker; fear of missed dates</li>
+              <li>• Invoices generated late or unbilled services forgotten</li>
+              <li>• Partners constantly stressed asking for task updates</li>
+            </ul>
+          </div>
+          <div class="glass-card" style="border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.03);">
+            <h4 style="color:#34d399; font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i> POWERED BY CA PRACTICE ERP (AFTER)</h4>
+            <ul style="font-size:12px; color:#cbd5e1; list-style:none; line-height:2.1;">
+              <li>• One central ERP database for all clients and tasks</li>
+              <li>• Automated WhatsApp reminders and 1-click mobile upload</li>
+              <li>• AI-assisted notice logging with escalation alerts</li>
+              <li>• 1-Click recurring billing & automatic payment follow-ups</li>
+              <li>• Partner opens executive command center with 100% clarity</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 50: WHY A CA SHOULD BUY THIS ERP -->
+      <div class="slide-screen" data-slide="50" data-category="Value Proposition">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-gem" style="color:var(--gold)"></i> Core Value</div>
+            <h2 class="slide-title">10 Reasons Why CA Firms Adopt This ERP</h2>
+            <p class="slide-subtitle">"CA ka kaam replace nahi karna — CA ka operational workload organize aur automate karna."</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 50 / 52</div>
+        </div>
+        <div class="slide-grid-2" style="font-size:12px; line-height:1.9;">
+          <div class="glass-card">
+            <div><strong>1. 100% Client Visibility:</strong> Client 360 cockpit in one screen.</div>
+            <div><strong>2. Staff Accountability:</strong> Zero "I forgot" excuses from articles.</div>
+            <div><strong>3. Standardized Workflows:</strong> Flawless execution every single month.</div>
+            <div><strong>4. Statutory Deadline Shield:</strong> Zero penalty risk for your clients.</div>
+            <div><strong>5. 3x Faster Data Intake:</strong> No endless follow-up phone calls.</div>
+          </div>
+          <div class="glass-card">
+            <div><strong>6. Centralized Document Vault:</strong> No files lost on local PCs.</div>
+            <div><strong>7. Notice Safety Engine:</strong> Timely response drafting with AI extraction.</div>
+            <div><strong>8. Automated WhatsApp:</strong> Branded client communication.</div>
+            <div><strong>9. Faster Fee Recovery:</strong> Automated collection workflows.</div>
+            <div><strong>10. Partner Peace of Mind:</strong> Firm runs smoothly even when you travel.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 51: COMMERCIAL PRODUCT ARCHITECTURE -->
+      <div class="slide-screen" data-slide="51" data-category="Commercial">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-building-shield"></i> Multi-Tenant SaaS</div>
+            <h2 class="slide-title">Commercial Multi-Firm Architecture</h2>
+            <p class="slide-subtitle">Completely isolated, secure, and independent firm workspaces</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 51 / 52</div>
+        </div>
+        <div class="slide-grid-4" style="margin-bottom:20px;">
+          <div class="glass-card" style="text-align:center;">
+            <div style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:6px;">CA FIRM A</div>
+            <div style="font-size:11px; color:var(--text-muted);">Own Users & Roles<br>Own Client Vault<br>Own Invoices & Billing</div>
+          </div>
+          <div class="glass-card" style="text-align:center;">
+            <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:6px;">CA FIRM B</div>
+            <div style="font-size:11px; color:var(--text-muted);">Separate Database<br>Custom SOP Templates<br>Own WhatsApp Channel</div>
+          </div>
+          <div class="glass-card" style="text-align:center;">
+            <div style="font-size:13px; font-weight:700; color:var(--emerald); margin-bottom:6px;">CA FIRM C</div>
+            <div style="font-size:11px; color:var(--text-muted);">Isolated Cloud Drive<br>Custom Staff Hierarchy<br>Own Portal Domain</div>
+          </div>
+          <div class="glass-card" style="text-align:center;">
+            <div style="font-size:13px; font-weight:700; color:var(--purple); margin-bottom:6px;">CA FIRM D</div>
+            <div style="font-size:11px; color:var(--text-muted);">Enterprise Security<br>Encrypted Backups<br>Independent MIS</div>
+          </div>
+        </div>
+        <div class="glass-card" style="font-size:12px; color:var(--text-muted); text-align:center;">
+          <i class="fa-solid fa-lock" style="color:var(--emerald)"></i> Bank-grade encryption ensuring strict privacy and confidentiality of all your client tax databases.
+        </div>
+      </div>
+
+      <!-- SLIDE 52: FINAL PRODUCT VISION -->
+      <div class="slide-screen" data-slide="52" data-category="Vision & Contact">
+        <div class="slide-header">
+          <div>
+            <div class="slide-tag"><i class="fa-solid fa-flag-checkered"></i> The Future of CA Practice</div>
+            <h2 class="slide-title">One ERP. Complete CA Firm.</h2>
+            <p class="slide-subtitle">Ready to transform your practice into an automated, modern enterprise?</p>
+          </div>
+          <div class="slide-index-badge">SLIDE 52 / 52</div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:24px; font-weight:800; margin-bottom:12px; color:#fff;">
+            Scale Your Firm Without Multiplying Chaos
+          </div>
+          <p style="font-size:14px; color:var(--text-muted); max-width:650px; margin-bottom:24px;">
+            Replace scattered Excel sheets and manual follow-ups with one robust operating system engineered specifically for Chartered Accountants.
+          </p>
+          <div class="glass-card" style="padding:20px 30px; text-align:center; border-color:var(--primary); max-width:500px; width:100%;">
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);">Developed & Presented By:</div>
+            <div style="font-size:22px; font-weight:800; color:var(--accent); margin:6px 0;">Dhiraj Jain</div>
+            <div style="font-size:12px; color:#cbd5e1; margin-bottom:16px;">CA Practice ERP Architect & Enterprise Consultant</div>
+            <a href="https://wa.me/?text=Hi%20Dhiraj%20Jain,%20I%20reviewed%20the%20CA%20Practice%20ERP%20Presentation%20and%20would%20like%20to%20schedule%20a%20full%20live%20demo%20for%20our%20CA%20Firm." target="_blank" class="btn-contact" style="display:inline-flex; justify-content:center; width:100%;">
+              <i class="fa-brands fa-whatsapp"></i> Schedule Live Demo on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bottom Slides Deck Bar -->
+  <footer class="slide-deck-footer">
+    <div class="key-insights">
+      <span><i class="fa-solid fa-circle-check"></i> 52 Detailed Modules</span>
+      <span><i class="fa-solid fa-robot"></i> CA-Supervised AI</span>
+      <span><i class="fa-solid fa-lock"></i> Client Data Confirmed</span>
+    </div>
+    <div style="font-size:11px; color:var(--text-dim);">
+      Press <kbd style="background:#131c33; padding:2px 6px; border-radius:4px; border:1px solid #273859;">Space</kbd> or <kbd style="background:#131c33; padding:2px 6px; border-radius:4px; border:1px solid #273859;">→</kbd> to navigate
+    </div>
+  </footer>
+
+  <!-- Slide List Drawer (All 52 slides selector) -->
+  <aside class="slide-drawer" id="drawer">
+    <div class="drawer-header">
+      <h3 style="font-size:14px; color:#fff;">Slide Navigation (52)</h3>
+      <button class="btn-ctrl" id="closeDrawer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-list" id="drawerList"></div>
+  </aside>
+
+  <!-- Autoplay Indicator Badge -->
+  <div class="video-floating-badge" id="videoStatusBadge">
+    <i class="fa-solid fa-video"></i> Video Walkthrough Playing
+  </div>
+
+  <script>
+    // State
+    const totalSlides = 52;
+    let currentSlide = 1;
+    let isPlaying = true;
+    let slideDuration = 6000; // ms
+    let timer = null;
+    let progressTimer = null;
+    let progressStartTime = 0;
+
+    // DOM Elements
+    const slides = document.querySelectorAll('.slide-screen');
+    const slideNumEl = document.getElementById('slideNum');
+    const progressBar = document.getElementById('progressBar');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const speedSelect = document.getElementById('speedSelect');
+    const fullScreenBtn = document.getElementById('fullScreenBtn');
+    const drawer = document.getElementById('drawer');
+    const openDrawerBtn = document.getElementById('openDrawer');
+    const closeDrawerBtn = document.getElementById('closeDrawer');
+    const drawerList = document.getElementById('drawerList');
+    const videoStatusBadge = document.getElementById('videoStatusBadge');
+
+    // Populate Slide Drawer
+    slides.forEach((slide, idx) => {
+      const num = idx + 1;
+      const title = slide.querySelector('.slide-title')?.innerText || `Slide ${num}`;
+      const item = document.createElement('div');
+      item.className = `drawer-item ${num === 1 ? 'active' : ''}`;
+      item.innerHTML = `<span>${num < 10 ? '0' + num : num}. ${title}</span>`;
+      item.addEventListener('click', () => {
+        goToSlide(num);
+        drawer.classList.remove('open');
+      });
+      drawerList.appendChild(item);
+    });
+
+    function updateSlideUI() {
+      slides.forEach(s => s.classList.remove('active'));
+      const activeSlide = document.querySelector(`.slide-screen[data-slide="${currentSlide}"]`);
+      if (activeSlide) activeSlide.classList.add('active');
+
+      const formattedNum = (currentSlide < 10 ? '0' : '') + currentSlide;
+      slideNumEl.innerText = `${formattedNum} / ${totalSlides}`;
+
+      // Update Drawer items
+      document.querySelectorAll('.drawer-item').forEach((it, i) => {
+        if (i + 1 === currentSlide) {
+          it.classList.add('active');
+          it.scrollIntoView({ block: 'nearest' });
+        } else {
+          it.classList.remove('active');
+        }
+      });
+
+      resetProgress();
+    }
+
+    function resetProgress() {
+      progressBar.style.transition = 'none';
+      progressBar.style.width = '0%';
+      if (isPlaying) {
+        setTimeout(() => {
+          progressBar.style.transition = `width ${slideDuration}ms linear`;
+          progressBar.style.width = '100%';
+        }, 50);
+      }
+    }
+
+    function startAutoPlay() {
+      clearTimeout(timer);
+      isPlaying = true;
+      playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      playPauseBtn.classList.add('play-active');
+      videoStatusBadge.style.display = 'flex';
+      resetProgress();
+
+      timer = setTimeout(() => {
+        nextSlide();
+      }, slideDuration);
+    }
+
+    function pauseAutoPlay() {
+      clearTimeout(timer);
+      isPlaying = false;
+      playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      playPauseBtn.classList.remove('play-active');
+      videoStatusBadge.style.display = 'none';
+      progressBar.style.transition = 'none';
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        pauseAutoPlay();
+      } else {
+        startAutoPlay();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+      } else {
+        currentSlide = 1; // loop video
+      }
+      updateSlideUI();
+      if (isPlaying) startAutoPlay();
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+      } else {
+        currentSlide = totalSlides;
+      }
+      updateSlideUI();
+      if (isPlaying) startAutoPlay();
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      updateSlideUI();
+      if (isPlaying) startAutoPlay();
+    }
+
+    // Event Listeners
+    playPauseBtn.addEventListener('click', togglePlay);
+    nextBtn.addEventListener('click', () => { pauseAutoPlay(); nextSlide(); });
+    prevBtn.addEventListener('click', () => { pauseAutoPlay(); prevSlide(); });
+
+    speedSelect.addEventListener('change', (e) => {
+      slideDuration = parseInt(e.target.value, 10);
+      if (isPlaying) startAutoPlay();
+    });
+
+    openDrawerBtn.addEventListener('click', () => drawer.classList.add('open'));
+    closeDrawerBtn.addEventListener('click', () => drawer.classList.remove('open'));
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        pauseAutoPlay();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        pauseAutoPlay();
+        prevSlide();
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    // Fullscreen Support
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+    fullScreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Initial Start (Runs like an automated product demo walkthrough)
+    updateSlideUI();
+    startAutoPlay();
+  </script>
+</body>
+</html>
